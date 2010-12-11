@@ -1,0 +1,83 @@
+Java文字列がSJISの文字のみを含むかの文字種チェック
+
+U+0000～U+FFFFまでの1文字ずつをチェックするのを
+100回繰り返して方式による差をチェック。
+
+SjisUtil：
+　　String.getBytes()とnew String()でSJISバイト列に変換後
+　　文字列に再変換して同じ文字列に戻るかをチェックする方式
+
+SjisByte:
+　　String.getBytes()でSJISバイト列に変換し、SJISの区画内に
+　　あるかをチェックする方式
+
+SjisCharacterSet：
+　　初回に判定用のHashSet<Character>を作って、それで
+　　判定する方式
+
+SjisCodePointSet：
+　　初回に判定用のHashSet<Integer>を作って、それで
+　　判定する方式
+
+SjisCodePointBitSet：
+　　初回に判定用のBitSetを作って、それで
+　　判定する方式
+
+SjisCodePointTable：
+　　初回に判定用のboolean[]を作って、それで
+　　判定する方式
+
+SjisUnicodeListMaker:
+　　判定用のデータ構造を作るためのJavaコード片生成用プログラム
+
+実験環境
+
+CPU: Intel Core i7 Q720 1.60GHz
+RAM: 8GB
+OS: Windows 7 Home Premium 64bit
+JVM: JDK1.6.0_22
+Eclipse: Helios Release
+
+Eclipseから実行した結果
+
+#1
+runSjisUtil            elapsed:2800.566911(ms)
+runSjisByte            elapsed:1527.402072(ms)
+runSjisCharacterSet       init:14.752124(ms)
+runSjisCharacterSet    elapsed:361.587119(ms)
+runSjisCodePointSet       init:15.116548(ms)
+runSjisCodePointSet    elapsed:325.018943(ms)
+runSjisCodePointBitSet    init:10.093524(ms)
+runSjisCodePointBitSet elapsed:268.352257(ms)
+runSjisCodePointTable     init:9.191447(ms)
+runSjisCodePointTable  elapsed:244.796208(ms)
+
+#2
+runSjisUtil            elapsed:2673.839665(ms)
+runSjisByte            elapsed:1561.312132(ms)
+runSjisCharacterSet       init:16.735927(ms)
+runSjisCharacterSet    elapsed:377.685944(ms)
+runSjisCodePointSet       init:16.657011(ms)
+runSjisCodePointSet    elapsed:334.848773(ms)
+runSjisCodePointBitSet    init:12.82
+1574(ms)
+runSjisCodePointBitSet elapsed:278.774919(ms)
+runSjisCodePointTable     init:7.955099(ms)
+runSjisCodePointTable  elapsed:235.738855(ms)
+
+#3
+runSjisUtil            elapsed:2689.869198(ms)
+runSjisByte            elapsed:1566.294094(ms)
+runSjisCharacterSet       init:17.260107(ms)
+runSjisCharacterSet    elapsed:357.457833(ms)
+runSjisCodePointSet       init:14.953584(ms)
+runSjisCodePointSet    elapsed:339.50224(ms)
+runSjisCodePointBitSet    init:11.200271(ms)
+runSjisCodePointBitSet elapsed:255.408781(ms)
+runSjisCodePointTable     init:8.62428(ms)
+runSjisCodePointTable  elapsed:257.81026(ms)
+
+TODO：
+・アルゴリズムごとに別プロセスで起動して比較
+　（今はさぼって1プロセスで順番に実行しています）
+・アルゴリズムごとにメモリ消費を調査
